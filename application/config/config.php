@@ -17,7 +17,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | environments.
 |
 */
-$config['base_url'] = 'http://localhost:8080/SchoolManagement-CI/';
+// Auto-detect base URL so it works on localhost AND public tunnels (e.g. ngrok)
+$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+// Support ngrok/proxy forwarded proto header
+if (!empty($_SERVER['HTTP_X_FORWARDED_PROTO'])) {
+    $protocol = $_SERVER['HTTP_X_FORWARDED_PROTO'];
+}
+$host = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : 'localhost:8080';
+$config['base_url'] = $protocol . '://' . $host . '/SchoolManagement-CI/';
 
 /*
 |--------------------------------------------------------------------------
